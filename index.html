@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Online IDE</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  
+  <div id="main">
+       <div id="editor" contenteditable="true"><?php echo htmlspecialchars($code); ?></div>
+    <button onclick="runCode()">Run</button>
+    <div id="output"></div>
+  </div>
+
+    <script>
+        function runCode() {
+            var code = document.getElementById("editor").innerText;
+            fetch('execute.php', {
+                method: 'POST',
+                body: JSON.stringify({ code: code }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("output").innerText = data;
+            });
+        }
+    </script>
+</body>
+</html>
